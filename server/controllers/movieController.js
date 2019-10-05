@@ -6,7 +6,7 @@ module.exports = {
   getSearch: (req, res) => {
     movieApi
       .getMovieList(req.query.genre)
-      .then(data => res.send(data))
+      .then(({ results }) => res.send(results))
       .catch(err => {
         console.log(err);
         res.sendStatus(500);

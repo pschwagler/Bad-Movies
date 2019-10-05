@@ -10,7 +10,6 @@ const api_key = process.env.API_KEY || '';
 
 // Don't forget to export your functions and require them within your server file
 const apiURL = 'https://api.themoviedb.org/3';
-const posterBaseURL = 'http://image.tmdb.org/t/p/w185/';
 
 exports.getGenres = function() {
   const url = apiURL + '/genre/movie/list';
