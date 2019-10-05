@@ -20,7 +20,7 @@ class Movies extends React.Component {
               <li
                 className='movie_item'
                 value={movie.id}
-                onClick={this.props.handleClick}
+                onClick={() => this.props.handleClick(movie.id)}
               >
                 <img
                   src={`http://image.tmdb.org/t/p/w185/${movie.poster_path}`}

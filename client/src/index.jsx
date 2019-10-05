@@ -18,6 +18,10 @@ class App extends React.Component {
 
     this.swapFavorites = this.swapFavorites.bind(this);
     this.handleGenreSelect = this.handleGenreSelect.bind(this);
+    this.saveMovie = this.saveMovie.bind(this);
+    this.handleMovieClick = this.handleMovieClick.bind(this);
+    this.deleteMovie = this.deleteMovie.bind(this);
+    this.getMovies = this.getMovies.bind(this);
   }
 
   componentDidMount() {
@@ -36,14 +40,30 @@ class App extends React.Component {
     }
   }
 
-  saveMovie(e) {
-    Axios.get('/movies/save', { param: { id: 33 } })
-      .then(console.log('movie saved'))
+  saveMovie(id) {
+    let movie = this.state.movies.filter(item => item.id === id)[0];
+    // console.log(movie);
+    Axios.post('/movies/save', movie)
+      .then(({ data }) => {
+        if (data.affectedRows > 0) {
+          console.log('saved new record');
+        }
+      })
       .catch(err => console.log(err));
   }
 
-  deleteMovie() {
-    // same as above but do something diff
+  deleteMovie(id) {
+    Axios.delete('/movies/delete', { params: { id } })
+      .then(this.getMovies)
+      .catch(err => console.log(err));
+  }
+
+  handleMovieClick(id) {
+    if (this.state.showFaves) {
+      this.deleteMovie(id);
+    } else {
+      this.saveMovie(id);
+    }
   }
 
   swapFavorites() {
@@ -79,7 +99,7 @@ class App extends React.Component {
               this.state.showFaves ? this.state.favorites : this.state.movies
             }
             showFaves={this.state.showFaves}
-            handleClick={this.saveMovie}
+            handleClick={this.handleMovieClick}
           />
         </div>
       </div>
