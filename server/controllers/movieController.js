@@ -1,31 +1,57 @@
-const movieModel = require('../models/movieModel.js');
-const apiHelpers = require('../helpers/apiHelpers.js');
+const model = require('../models/movieModel.js');
+const movieApi = require('../helpers/apiHelpers.js');
 
 //Return requests to the client
 module.exports = {
   getSearch: (req, res) => {
-    // get the search genre     
-
-    // https://www.themoviedb.org/account/signup
-    // get your API KEY
-
-    // use this endpoint to search for movies by genres, you will need an API key
-
-    // https://api.themoviedb.org/3/discover/movie
-
-    // and sort them by horrible votes using the search parameters in the API
+    movieApi
+      .getMovieList(req.query.genre)
+      .then(data => res.send(data))
+      .catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+      });
   },
   getGenres: (req, res) => {
-    // make an axios request to get the list of official genres
-    
-    // use this endpoint, which will also require your API key: https://api.themoviedb.org/3/genre/movie/list
-    
-    // send back
+    movieApi
+      .getGenres()
+      .then(data => res.send(data))
+      .catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+      });
   },
   saveMovie: (req, res) => {
-
+    model
+      .saveOne(req.body)
+      .then(() => model.getOneByTitle(req.body.title))
+      .then(data => res.status(201).send(data))
+      .catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+      });
   },
   deleteMovie: (req, res) => {
-
+    if (!req.query.id && !req.query.title) {
+      return req
+        .status(412)
+        .send('Please include query parameter with name or id');
+    }
+    model
+      .delete(req.query)
+      .then(() => res.send())
+      .catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+      });
+  },
+  getFavorites: (req, res) => {
+    model
+      .getAll()
+      .then(data => res.send(data))
+      .catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+      });
   }
-}
+};
