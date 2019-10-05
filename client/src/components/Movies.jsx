@@ -17,7 +17,11 @@ class Movies extends React.Component {
         <ul className='movies'>
           {this.props.movies &&
             this.props.movies.map(movie => (
-              <li className='movie_item'>
+              <li
+                className='movie_item'
+                value={movie.id}
+                onClick={this.props.handleClick}
+              >
                 <img
                   src={`http://image.tmdb.org/t/p/w185/${movie.poster_path}`}
                 />
@@ -26,7 +30,9 @@ class Movies extends React.Component {
                   <section className='movie_details'>
                     <div className='movie_year'>
                       <span className='title'>Year</span>
-                      <span>{movie.release_date.substr(0, 4)}</span>
+                      <span>
+                        {movie.release_date && movie.release_date.substr(0, 4)}
+                      </span>
                     </div>
                     <div className='movie_rating'>
                       <span className='title'>Rating</span>

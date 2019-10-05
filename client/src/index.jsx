@@ -36,8 +36,10 @@ class App extends React.Component {
     }
   }
 
-  saveMovie() {
-    // same as above but do something diff
+  saveMovie(e) {
+    Axios.get('/movies/save', { param: { id: 33 } })
+      .then(console.log('movie saved'))
+      .catch(err => console.log(err));
   }
 
   deleteMovie() {
@@ -77,6 +79,7 @@ class App extends React.Component {
               this.state.showFaves ? this.state.favorites : this.state.movies
             }
             showFaves={this.state.showFaves}
+            handleClick={this.saveMovie}
           />
         </div>
       </div>

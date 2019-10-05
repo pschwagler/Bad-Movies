@@ -23,8 +23,7 @@ module.exports = {
   },
   saveMovie: (req, res) => {
     model
-      .saveOne(req.body)
-      .then(() => model.getOneByTitle(req.body.title))
+      .saveOne(req.body.id)
       .then(data => res.status(201).send(data))
       .catch(err => {
         console.log(err);
